@@ -14,3 +14,5 @@ OBS: Repositório do app meu preço baixo:  https://github.com/glauberosouza/api
 # 3. Comparação entre o Alerta e o Produto
 
     Se o preço informado no alerta coincidir com o preço do produto recém-adicionado, envia um e-mail ao usuário informando que o range de preço do produto está dentro do informado no alerta.
+
+## Projeto em andamento sujeito a alterações.
