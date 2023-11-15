@@ -23,8 +23,8 @@ public class PriceAlertListener {
     public void messageListener(String message) {
         try {
 
-            var alertPriceReciever = objectMapper.readValue(message, PriceAlertEvent.class);
-            log.info("Novo alerta de preço recebido do Kafka: " + alertPriceReciever);
+            var priceAlertEvent = objectMapper.readValue(message, PriceAlertEvent.class);
+            log.info("Novo alerta de preço recebido do Kafka: " + priceAlertEvent);
 
         } catch (Exception e) {
 
