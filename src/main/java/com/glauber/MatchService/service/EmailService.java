@@ -48,9 +48,9 @@ public class EmailService {
 
             message.setFrom("noreply@mylowprice.com");
             message.setTo(priceAlertEvent.getEmail());
-            message.setSubject("Alerta de Preço - Match Encontrado");
+            message.setSubject("Alerta de Preço: Match Encontrado");
             message.setText("O produto " + productEvent.getName() +
-                    " está no preço desejado (abaixo de  " + priceAlertEvent.getPriceRange());
+                    " está no preço desejado abaixo de  " + priceAlertEvent.getPriceRange());
 
             emailSender.send(message);
 

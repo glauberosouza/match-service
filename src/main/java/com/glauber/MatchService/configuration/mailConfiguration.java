@@ -12,7 +12,7 @@ public class mailConfiguration {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        // no meu caso utilizei o emailtrap
+        // Estou utilizando o https://mailtrap.io/signin
         mailSender.setHost("yourHost");
         mailSender.setPort(2525);
 
