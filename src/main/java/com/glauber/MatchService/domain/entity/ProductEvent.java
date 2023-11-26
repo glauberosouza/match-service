@@ -1,11 +1,13 @@
 package com.glauber.MatchService.domain.entity;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.math.BigDecimal;
 @Data
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductEvent {
     private Long id;
     private String name;

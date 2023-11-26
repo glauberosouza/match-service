@@ -1,6 +1,7 @@
 package com.glauber.MatchService.listeners;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glauber.MatchService.domain.entity.PriceAlertEvent;
 import com.glauber.MatchService.service.EmailService;
@@ -30,9 +31,10 @@ public class PriceAlertListener {
             log.info("Novo alerta de preço recebido do Kafka: " + priceAlertEvent);
             emailService.sendAlertConfirmation(message);
 
+        } catch (JsonProcessingException e) {
+            log.error("Ocorreu uma falha ao desserializar o evento JSON: " + e.getMessage());
         } catch (Exception e) {
-            log.error("Ocorreu uma falha ao desserializar o evento: " + e.getMessage());
-
+            log.error("Ocorreu uma falha ao processar o evento do Kafka: " + e.getMessage());
         }
     }
 }

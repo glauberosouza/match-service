@@ -1,10 +1,12 @@
 package com.glauber.MatchService.domain.entity;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 @Data
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PriceAlertEvent {
     private Long id;
     private String name;

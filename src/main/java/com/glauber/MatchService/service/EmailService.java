@@ -20,9 +20,9 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
     @Autowired
-    private PriceAlertListener priceAlertListener;
+    private PriceAlertListener priceAlertListener; // Não esquecer de deletar depois.
     @Autowired
-    private ProductListener productListener;
+    private ProductListener productListener; // Não estou precisando dele aqui
 
     public void sendAlertConfirmation(String email) {
         try {
