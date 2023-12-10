@@ -1,10 +1,8 @@
 package com.glauber.MatchService.service;
 
-import com.glauber.MatchService.domain.entity.PriceAlertEvent;
-import com.glauber.MatchService.domain.entity.ProductEvent;
+import com.glauber.MatchService.domain.entity.PriceAlert;
+import com.glauber.MatchService.domain.entity.Product;
 import com.glauber.MatchService.domain.exception.EmailSendException;
-import com.glauber.MatchService.listeners.PriceAlertListener;
-import com.glauber.MatchService.listeners.ProductListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -19,43 +17,39 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender emailSender;
-    @Autowired
-    private PriceAlertListener priceAlertListener; // Não esquecer de deletar depois.
-    @Autowired
-    private ProductListener productListener; // Não estou precisando dele aqui
 
-    public void sendAlertConfirmation(String email) {
+    public void sendAlertConfirmation(PriceAlert priceAlert) {
         try {
 
             SimpleMailMessage message = new SimpleMailMessage();
 
             message.setFrom("noreply@mylowprice.com");
-            message.setTo(email);
+            message.setTo(priceAlert.getEmail());
             message.setSubject("Alerta de Preço Cadastrado");
             message.setText("Seu alerta de preço foi cadastrado com sucesso!");
 
             emailSender.send(message);
 
         } catch (MailException ex) {
-            throw new EmailSendException("Erro ao enviar e-mail de confirmação do alerta. " + email);
+            throw new EmailSendException("Erro ao enviar e-mail de confirmação do alerta. ");
         }
     }
 
-    public void sendMatchEmail(PriceAlertEvent priceAlertEvent, ProductEvent productEvent) {
+    public void sendMatchEmail(PriceAlert priceAlert, Product product) {
         try {
 
             SimpleMailMessage message = new SimpleMailMessage();
 
             message.setFrom("noreply@mylowprice.com");
-            message.setTo(priceAlertEvent.getEmail());
+            message.setTo(priceAlert.getEmail());
             message.setSubject("Alerta de Preço: Match Encontrado");
-            message.setText("O produto " + productEvent.getName() +
-                    " está no preço desejado abaixo de  " + priceAlertEvent.getPriceRange());
+            message.setText("O produto " + product.getName() +
+                    " está no preço desejado abaixo de  " + priceAlert.getPriceRange());
 
             emailSender.send(message);
 
         } catch (MailException ex) {
-            throw new EmailSendException("Erro ao enviar e-mail de notificação de match. " + priceAlertEvent.getEmail());
+            throw new EmailSendException("Erro ao enviar e-mail de notificação de match. " + priceAlert.getEmail());
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.glauber.MatchService.service;
 
-import com.glauber.MatchService.domain.entity.PriceAlertEvent;
-import com.glauber.MatchService.domain.entity.ProductEvent;
+import com.glauber.MatchService.domain.entity.PriceAlert;
+import com.glauber.MatchService.domain.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,19 +13,27 @@ public class MatchService {
     @Autowired
     private EmailService emailService;
 
-    public void verifyMatches(PriceAlertEvent priceAlertEvent, ProductEvent productEvent) {
+    public void verifyMatches(PriceAlert priceAlert, Product product) {
 
-        if (isMatch(priceAlertEvent, productEvent)) {
-            emailService.sendMatchEmail(priceAlertEvent, productEvent);
+        if (isMatch(priceAlert, product)) {
+            emailService.sendMatchEmail(priceAlert, product);
         } else {
-            log.info("Nenhuma correspondência encontrada para o alerta de preço: {}", priceAlertEvent);
+            log.info("Nenhuma correspondência encontrada para o alerta de preço: {}", priceAlert);
         }
     }
 
-    private boolean isMatch(PriceAlertEvent priceAlertEvent, ProductEvent productEvent) {
-        Double priceRange = priceAlertEvent.getPriceRange();
-        Double productPrice = productEvent.getPrice().doubleValue();
-        return productPrice < priceRange;
+    private boolean isMatch(PriceAlert priceAlert, Product product) {
+        Double priceRange = priceAlert.getPriceRange();
+        double productPrice = product.getPrice().doubleValue();
+        boolean match = productPrice < priceRange;
+
+        if (match) {
+            log.info("Match encontrado: Alerta de preço [{}], Produto [{}]", priceAlert, product);
+        } else {
+            log.debug("Nenhum match encontrado");
+        }
+
+        return match;
     }
 }
 
