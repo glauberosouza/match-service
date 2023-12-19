@@ -13,9 +13,7 @@ public class PriceAlertEventDeserializer implements Deserializer<PriceAlert> {
     @Override
     public PriceAlert deserialize(String topic, byte[] data) {
         try {
-            String message = new String(data);
-
-            return objectMapper.readValue(message, PriceAlert.class);
+            return objectMapper.readValue(data, PriceAlert.class);
         } catch (IOException e) {
             throw new SerializationException("Erro ao desserializar a mensagem do Kafka", e);
         }
