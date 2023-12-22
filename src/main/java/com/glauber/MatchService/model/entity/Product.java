@@ -1,7 +1,5 @@
-package com.glauber.MatchService.domain.entity;
+package com.glauber.MatchService.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

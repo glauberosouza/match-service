@@ -3,8 +3,8 @@ package com.glauber.MatchService.listeners;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.glauber.MatchService.domain.entity.PriceAlert;
-import com.glauber.MatchService.service.EmailService;
+import com.glauber.MatchService.model.entity.PriceAlert;
+import com.glauber.MatchService.model.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -19,9 +19,7 @@ public class PriceAlertListener {
     private EmailService emailService;
 
     @KafkaListener(
-            topics = "NEW_PRICE_ALERT",
-            groupId = "group-alert",
-            containerFactory = "containerFactoryAlert"
+            topics = "NEW_PRICE_ALERT", groupId = "new-price-alert"
     )
     public void messageListener(String message) {
         try {

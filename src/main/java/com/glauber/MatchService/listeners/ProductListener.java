@@ -2,7 +2,7 @@ package com.glauber.MatchService.listeners;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.glauber.MatchService.domain.entity.Product;
+import com.glauber.MatchService.model.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,10 +18,7 @@ public class ProductListener {
     private ObjectMapper objectMapper;
 
     @KafkaListener(
-            topics = "NEW_PRODUCT",
-            groupId = "group-product",
-            containerFactory = "containerFactoryProduct"
-            // Aponta para o Kafka factory configurado no bean da classe KafkaConfiguration
+            topics = "NEW_PRODUCT", groupId = "new-product"
     )
     public void messageListener(String message) {
         try {

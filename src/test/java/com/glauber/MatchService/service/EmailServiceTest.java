@@ -1,8 +1,9 @@
 package com.glauber.MatchService.service;
 
-import com.glauber.MatchService.domain.entity.PriceAlertEvent;
-import com.glauber.MatchService.domain.entity.ProductEvent;
-import com.glauber.MatchService.domain.exception.EmailSendException;
+import com.glauber.MatchService.model.entity.PriceAlert;
+import com.glauber.MatchService.model.entity.Product;
+import com.glauber.MatchService.model.exception.EmailSendException;
+import com.glauber.MatchService.model.service.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,13 +66,13 @@ class EmailServiceTest {
     public void shouldSendEmailOfConfirmationOfMatchPrice() {
         // Arrange
         Mockito.doNothing().when(javaMailSender).send(any(SimpleMailMessage.class));
-        PriceAlertEvent priceAlertEvent = new PriceAlertEvent();
-        priceAlertEvent.setEmail("glauber@email.com");
-        ProductEvent productEvent = new ProductEvent();
-        productEvent.setName("Xbox");
+        PriceAlert priceAlert = new PriceAlert();
+        priceAlert.setEmail("glauber@email.com");
+        Product product = new Product();
+        product.setName("Xbox");
 
         // Act
-        emailService.sendMatchEmail(priceAlertEvent, productEvent);
+        emailService.sendMatchEmail(priceAlert, product);
 
 
         // Assert
@@ -82,25 +83,25 @@ class EmailServiceTest {
         String body = Arrays.stream(usersEmail).findFirst().get();
 
         assertNotNull(sentMessage);
-        assertEquals("glauber@email.com", priceAlertEvent.getEmail());
+        assertEquals("glauber@email.com", priceAlert.getEmail());
         assertEquals("glauber@email.com", body);
-        assertEquals("O produto " + productEvent.getName() +
-                " está no preço desejado abaixo de  " + priceAlertEvent.getPriceRange(), sentMessage.getText());
+        assertEquals("O produto " + product.getName() +
+                " está no preço desejado abaixo de  " + priceAlert.getPriceRange(), sentMessage.getText());
     }
     @Test
     @DisplayName("Deve falhar ao tentar enviar email de match entre o preço do produto e o range do alerta")
     public void shouldFailWhenTryToSendEmailOfConfirmationOfMatchPrice(){
-        PriceAlertEvent priceAlertEvent = new PriceAlertEvent();
-        priceAlertEvent.setEmail("glauber@email.com");
-        ProductEvent productEvent = new ProductEvent();
-        productEvent.setName("Xbox");
+        PriceAlert priceAlert = new PriceAlert();
+        priceAlert.setEmail("glauber@email.com");
+        Product product = new Product();
+        product.setName("Xbox");
 
         Mockito.doThrow(new MailSendException("Erro ao enviar e-mail de notificação de match. "))
                 .when(javaMailSender)
                 .send(Mockito.any(SimpleMailMessage.class));
 
         assertThrows(EmailSendException.class, ()
-                -> emailService.sendMatchEmail(priceAlertEvent, productEvent));
+                -> emailService.sendMatchEmail(priceAlert, product));
 
     }
 }

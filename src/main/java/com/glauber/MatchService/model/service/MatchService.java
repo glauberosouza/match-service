@@ -1,7 +1,7 @@
-package com.glauber.MatchService.service;
+package com.glauber.MatchService.model.service;
 
-import com.glauber.MatchService.domain.entity.PriceAlert;
-import com.glauber.MatchService.domain.entity.Product;
+import com.glauber.MatchService.model.entity.PriceAlert;
+import com.glauber.MatchService.model.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
