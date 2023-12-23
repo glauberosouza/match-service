@@ -1,7 +1,9 @@
 package com.glauber.MatchService.service;
 
-import com.glauber.MatchService.domain.entity.PriceAlert;
-import com.glauber.MatchService.domain.entity.Product;
+import com.glauber.MatchService.model.entity.PriceAlert;
+import com.glauber.MatchService.model.entity.Product;
+import com.glauber.MatchService.model.service.EmailService;
+import com.glauber.MatchService.model.service.MatchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -9,14 +9,18 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-// TODO: PRECISO VALIDAR ATRAVÉS DE UM EMAIL PARA O USUÁRIO QUE O ALERTA FOI CRIADO
-// TODO: PRECISO VERIFICAR NO MATCHSERVICE SE DEU MATCH NOS PREÇOS DAS ENTIDADES E ATRIBUIR O MÉTODO AO ENVIO DO EMAIL COM A INFO.
+
+import java.util.Optional;
+//TODO NÃO ESTÁ SENDO ENVIADO O EMAIL AVISANDO DO RANGE DE PREÇO
 @Slf4j
 @Service
 public class EmailService {
 
     @Autowired
     private JavaMailSender emailSender;
+    @Autowired
+    private MatchService matchService;
+
 
     public void sendAlertConfirmation(PriceAlert priceAlert) {
         try {
@@ -25,8 +29,8 @@ public class EmailService {
 
             message.setFrom("noreply@mylowprice.com");
             message.setTo(priceAlert.getEmail());
-            message.setSubject("Alerta de Preço Cadastrado");
-            message.setText("Seu alerta de preço foi cadastrado com sucesso!");
+            message.setSubject("Alerta de Preco Cadastrado");
+            message.setText("Seu alerta de preco foi cadastrado com sucesso!");
 
             emailSender.send(message);
 
@@ -35,21 +39,23 @@ public class EmailService {
         }
     }
 
-    public void sendMatchEmail(PriceAlert priceAlert, Product product) {
+    public void sendMatchEmail(Product product) {
         try {
+            Optional<PriceAlert> priceAlert = matchService.verifyMatches(product);
 
-            SimpleMailMessage message = new SimpleMailMessage();
+            if (priceAlert.isPresent()) {
+                PriceAlert priceAlertFounded = priceAlert.get();
+                SimpleMailMessage message = new SimpleMailMessage();
 
-            message.setFrom("noreply@mylowprice.com");
-            message.setTo(priceAlert.getEmail());
-            message.setSubject("Alerta de Preço: Match Encontrado");
-            message.setText("O produto " + product.getName() +
-                    " está no preço desejado abaixo de  " + priceAlert.getPriceRange());
-
-            emailSender.send(message);
-
+                message.setFrom("noreply@mylowprice.com");
+                message.setTo(priceAlertFounded.getEmail());
+                message.setSubject("Alerta de Preco: Match Encontrado");
+                message.setText("O produto " + product.getName() +
+                        " está no preco desejado abaixo de  " + priceAlertFounded.getPriceRange());
+                emailSender.send(message);
+            }
         } catch (MailException ex) {
-            throw new EmailSendException("Erro ao enviar e-mail de notificação de match. " + priceAlert.getEmail());
+            throw new EmailSendException("Erro ao enviar e-mail de notificação de match. ");
         }
     }
 }
