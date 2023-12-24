@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-//TODO NÃO ESTÁ SENDO ENVIADO O EMAIL AVISANDO DO RANGE DE PREÇO
+//TODO FORMATAR O EMAIL PARA QUE CHEGUE MAIS BONITO PARA O USUÁRIO
 @Slf4j
 @Service
 public class EmailService {
@@ -42,8 +42,6 @@ public class EmailService {
     public void sendMatchEmail(Product product) {
         try {
             Optional<PriceAlert> priceAlert = matchService.verifyMatches(product);
-
-            if (priceAlert.isPresent()) {
                 PriceAlert priceAlertFounded = priceAlert.get();
                 SimpleMailMessage message = new SimpleMailMessage();
 
@@ -51,9 +49,9 @@ public class EmailService {
                 message.setTo(priceAlertFounded.getEmail());
                 message.setSubject("Alerta de Preco: Match Encontrado");
                 message.setText("O produto " + product.getName() +
-                        " está no preco desejado abaixo de  " + priceAlertFounded.getPriceRange());
+                        " esta no preco desejado abaixo de: " + priceAlertFounded.getPriceRange());
                 emailSender.send(message);
-            }
+
         } catch (MailException ex) {
             throw new EmailSendException("Erro ao enviar e-mail de notificação de match. ");
         }

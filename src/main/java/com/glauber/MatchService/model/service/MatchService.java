@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.Optional;
-//TODO NÃO ESTÁ DANDO CERTO A COMPARAÇÃO DO PREÇO VERIFICAR.
 
 @Slf4j
 @Service
@@ -22,15 +20,18 @@ public class MatchService {
 
 
     public Optional<PriceAlert> verifyMatches(Product product) {
+
         var allPriceAlerts = priceAlertRepository.findAll();
 
-        return allPriceAlerts.stream()
-                .filter(alert -> Objects.equals(alert.getName(), product.getName()))
-                .findFirst()
-                .filter(alert -> BigDecimal.valueOf(alert.getPriceRange()).compareTo(product.getPrice()) < 0)
-                .map(alert -> {
-                    log.info("Match encontrado: Alerta de preço [{}], Produto [{}]", alert, product);
-                    return alert;
-                });
+        Optional<PriceAlert> first = allPriceAlerts.stream().filter(priceAlert -> priceAlert.getProductName().equals(product.getName())).findFirst();
+        PriceAlert priceAlert = first.get();
+        BigDecimal price = product.getPrice();
+        double productValue = price.doubleValue();
+        if (productValue <= priceAlert.getPriceRange()) {
+            log.info("Match encontrado: Alerta de preço [{}], Produto [{}]", priceAlert, product);
+            return Optional.of(priceAlert);
+        }
+
+        return Optional.empty();
     }
 }
