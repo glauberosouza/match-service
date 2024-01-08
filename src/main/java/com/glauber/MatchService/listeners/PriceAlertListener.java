@@ -1,10 +1,8 @@
 package com.glauber.MatchService.listeners;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glauber.MatchService.model.entity.PriceAlert;
-import com.glauber.MatchService.model.entity.Product;
 import com.glauber.MatchService.model.repository.PriceAlertRepository;
 import com.glauber.MatchService.model.service.EmailService;
 import com.glauber.MatchService.model.service.MatchService;
@@ -12,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Slf4j
 @Component

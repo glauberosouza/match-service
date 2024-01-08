@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
 @Service
-public class PriceAlertImpl implements PriceAlertService {
+public class PriceAlerServicetImpl implements PriceAlertService {
     @Autowired
     private PriceAlertRepository priceAlertRepository;
 
